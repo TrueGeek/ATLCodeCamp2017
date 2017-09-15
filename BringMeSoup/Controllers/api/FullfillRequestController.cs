@@ -15,28 +15,7 @@ namespace BringMeSoup.Controllers
     public class FullfillRequestController : ApiController
     {
 
-        public IHttpActionResult Get()
-        {
-
-            using (var db = new ApplicationDbContext())
-            {
-
-                var userId = User.Identity.GetUserId();
-                if (userId == null) return Unauthorized();
-                var user = db.Users.FirstOrDefault(x => x.Id == userId);
-
-                var userIdToSearchFor = userId;
-                if (user.UserType == UserType.Caretaker) userIdToSearchFor = user.AssociatedSickUserId;
-
-                var requests = db.Requests.Where(x => x.RequestedByUserId == userIdToSearchFor && x.FullfilledByUserId == null).ToList();
-
-                return Ok(requests);
-
-            }
-
-        }
-
-        public async Task<IHttpActionResult> Post()
+        public async Task<IHttpActionResult> Post(Guid id)
         {
 
             using (var db = new ApplicationDbContext())
@@ -45,13 +24,11 @@ namespace BringMeSoup.Controllers
                 var userId = User.Identity.GetUserId();
                 if (userId == null) return Unauthorized();
 
-                var request = new Request()
-                {
-                    Id = Guid.NewGuid(),
-                    RequestedByUserId = userId,
-                    RequestedOn = DateTime.UtcNow
-                };
-                db.Requests.Add(request);
+                var request = db.Requests.FirstOrDefault(x => x.Id == id);
+                if (request == null) return BadRequest("Invalid RequestId");
+
+                request.FullfilledByUserId = userId;
+                request.FullfilledOn = DateTime.UtcNow;
 
                 await db.SaveChangesAsync();
 
