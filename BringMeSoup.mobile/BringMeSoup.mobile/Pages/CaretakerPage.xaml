@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:BringMeSoup.mobile.ViewModels"
+    x:Class="BringMeSoup.mobile.Pages.CaretakerPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:CaretakerViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <StackLayout 
+            Orientation="Vertical"
+            VerticalOptions="Center"
+            Spacing="20"
+            Padding="20">
+
+            <Button 
+                Command="{Binding FullfillRequest}"
+                Text="I'm Done Getting The Soup!"
+                IsVisible="{Binding RequestIsPending}"
+                TextColor="White"
+                FontSize="30"
+                BackgroundColor="Black"/>
+
+            <Label Text="You Are:" />
+            <Label Text="{Binding CurrentUserEmail}" />
+            <Label Text="You Are Caring For:" />
+            <Label Text="{Binding AssociatedUserEmail}" />
+
+            <Button 
+                Command="{Binding LogOff}"
+                Text="Log Off"
+                TextColor="White"
+                FontSize="30"
+                BackgroundColor="Black"/>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+
+</ContentPage>
+    
