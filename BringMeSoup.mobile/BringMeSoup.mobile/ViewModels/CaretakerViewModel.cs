@@ -38,6 +38,11 @@ namespace BringMeSoup.mobile.ViewModels
         private bool GetRequests()
         {
 
+            if (string.IsNullOrEmpty(Helpers.Settings.AccessToken))
+            {
+                return false;   // stop the timer, the user has logged off
+            }
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helpers.Settings.AccessToken);
 
